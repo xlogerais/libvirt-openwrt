@@ -1,3 +1,11 @@
+# 1/ opkg install tinc
+# 2/ upload archive with tinc net config
+# 3/ unarchive net config in /etc/tinc/netname
+# 4/ declare new net
+
 uci add tinc net
 uci set tinc.@net[-1].name=work
 uci set tinc.@net[-1].enabled=1
+uci commit
+
+# 5/ configure firewall for tinc

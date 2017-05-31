@@ -3,10 +3,9 @@
 # 3/ unarchive net config in /etc/tinc/netname
 # 4/ declare new net
 
-uci add tinc tinc-net
-uci set tinc.@tinc-net[-1]='netname'
-uci set tinc.@tinc-net[-1].name='hostname'
-uci set tinc.@tinc-net[-1].enabled=1
+uci set tinc.netname=tinc-net
+uci set tinc.netname.name='hostname'
+uci set tinc.netname.enabled=1
 uci commit
 
 # 5/ configure firewall for tinc

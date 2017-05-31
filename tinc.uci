@@ -9,3 +9,44 @@ uci set tinc.netname.enabled=1
 uci commit
 
 # 5/ configure firewall for tinc
+
+# 5.1/ Create a network
+uci set network.vpn=interface
+uci set network.vpn.ifname=netname
+uci set network.vpn.proto=none
+uci set network.vpn.auto=1
+
+# 5.2/ Create a zone
+uci set firewall.vpn=zone
+uci set firewall.vpn.name=vpn
+uci set firewall.vpn.network=netname
+uci set firewall.vpn.input=ACCEPT
+uci set firewall.vpn.forward=REJECT
+uci set firewall.vpn.output=ACCEPT
+uci set firewall.vpn.masq=1
+
+# 5.3/ Allow incoming traffic
+uci set firewall.allow_tinc_inbound_tcp=rule
+uci set firewall.allow_tinc_inbound_tcp.target=ACCEPT
+uci set firewall.allow_tinc_inbound_tcp.src=*
+uci set firewall.allow_tinc_inbound_tcp.proto=tcp
+uci set firewall.allow_tinc_inbound_tcp.dest_port=655
+uci set firewall.allow_tinc_inbound_udp=rule
+uci set firewall.allow_tinc_inbound_udp.target=ACCEPT
+uci set firewall.allow_tinc_inbound_udp.src=*
+uci set firewall.allow_tinc_inbound_udp.proto=udp
+uci set firewall.allow_tinc_inbound_udp.dest_port=655
+
+# 5.3/ Allow forwarding traffic vpn<->lan
+uci set firewall.vpn_forwarding_lan_in=forwarding
+uci set firewall.vpn_forwarding_lan_in.src=vpn
+uci set firewall.vpn_forwarding_lan_in.dest=lan
+uci set firewall.vpn_forwarding_lan_out=forwarding
+uci set firewall.vpn_forwarding_lan_out.src=lan
+uci set firewall.vpn_forwarding_lan_out.dest=vpn
+
+# Commit changes
+uci commit network
+/etc/init.d/network reload
+uci commit firewall
+/etc/init.d/firewall reload

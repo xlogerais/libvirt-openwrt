@@ -12,7 +12,7 @@ The script **openwrt-download-image.bash** download an official image from the w
 
 You can edit the script and change the variables "" and "" to choose the libvirt pool and image name.
 
-## Launch an instance
+### Launch an instance
 
 The script **openwrt-launch-instance.bash** launch one or several instances of openwrt in libvirt.
 
